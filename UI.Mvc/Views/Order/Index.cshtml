@@ -1,0 +1,95 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@{
+    ViewBag.Title = "Orders History";
+}
+
+<div id="ordersHistory" class="loading">
+    <h2>Your Orders history:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Tracking Id</th>
+                <th scope="col">Status</th>
+                <th scope="col">Due Date</th>
+                <th scope="col">Last Update</th>
+                <th scope="col">Shipping Address</th>
+                <th scope="col">Number Of Items</th>
+                <th scope="col">Order total</th>
+            </tr>
+        </thead>
+        <tbody id="orders"></tbody>
+    </table>
+</div>
+
+<p>
+    @Html.ActionLink("Continue shopping", "Index", "Category", routeValues: null, htmlAttributes: new { id = "shoppingLink" })
+</p>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '/account/GetCurrentUserSessionKey',
+                success: function (result) {
+                    retrieveOrdersHistory(result.userSessionKey);
+                }
+            });
+        });
+
+        function retrieveOrdersHistory(userId) {
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                timeout: 15000,
+                url: baseApiUrl + '/account/' + userId + '/orders',
+                success: function (ordersHistory) {
+                    var history = '';
+                    $.each(ordersHistory, function (index, order) {
+                        var orderTotal = 0;
+                        $.each(order.orderItems, function (index, orderItem) {
+                            orderTotal += orderItem.quantity * orderItem.unitPrice;
+                        });
+                        history += '<tr>'
+                            + '<td><a href="/orders/' + order.historyId + '">' 
+                                + order.trackingId.substring(0, 4)
+                                + '****'
+                                + order.trackingId.substring(order.trackingId.length - 4) + '</a></td>'
+                            + '<td>' + order.status + '</td>'
+                            + '<td>' + new Date(order.dueDate).toDateString() + '</td>'
+                            + '<td>' + new Date(order.modifiedDate).toDateString() + '</td>'
+                            + '<td>' + order.shippingAddress.addressLine1
+                                + ', ' + order.shippingAddress.city
+                                + ' (' + order.shippingAddress.postalCode + ')' + '</td>'
+                            + '<td class="number">' + order.orderItems.length + '</td>'
+                            + '<td class="number">$' + orderTotal.toFixed(2) + '</td>'
+                            + '</tr>';
+                    });
+
+                    if (history.length == 0) {
+                        $('#ordersHistory').html('<h3>You have no orders placed!</h3>');
+                    }
+                    else {
+                        $('#orders').html(history);
+                    }
+                    $('#ordersHistory').toggleClass('loading');
+                },
+                error: function (x, y, z) {
+                    $('#ordersHistory').html('<h3>Error retrieving orders history, please retry later..</h3>');
+                    $('#ordersHistory').toggleClass('loading');
+                }
+            });
+        };
+    </script>
+}

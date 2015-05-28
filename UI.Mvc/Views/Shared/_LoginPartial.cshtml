@@ -1,0 +1,28 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@if (UI.Mvc.Helpers.AuthenticatedSessionHelper.IsValidAuthenticatedSession)
+{
+    <text>
+    Hello, <span class="logged-user">@User.Identity.Name!</span>
+    @Html.ActionLink("My Orders", "Index", "Order", routeValues: null, htmlAttributes: new { id = "ordersLink" })
+    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+    }
+    </text>
+}
+else
+{
+    <text>
+    @Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
+    @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </text>
+}

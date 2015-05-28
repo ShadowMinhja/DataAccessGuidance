@@ -1,0 +1,23 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@using DataAccess.MvcWebApi.Areas.HelpPage
+@model InvalidSample
+
+@if (HttpContext.Current.IsDebuggingEnabled)
+{
+    <div class="warning-message-container">
+        <p>@Model.ErrorMessage</p>
+    </div>
+}
+else
+{
+    <p>Sample not available.</p>
+}

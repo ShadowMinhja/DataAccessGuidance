@@ -1,0 +1,63 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@Html.Hidden("id", @ViewContext.RouteData.Values["subcategoryId"])
+
+<h2 id="subcategoryName"></h2>
+
+<div id="productSection">
+    <p class="breadcrumbs">
+        <a href="/categories">All Categories</a>
+        > <a href="#" id="categoryBreadcrumb"></a>
+        > <span id="subcategoryBreadcrumb"></span>
+    </p>
+
+    <div id="products" class="loading"></div>
+</div>
+
+@section scripts
+
+{
+    <script type="text/javascript">
+        $(function () {
+            var subcategoryId = $('#id').val();
+
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                timeout: 15000,
+                url: baseApiUrl + '/subcategories/' + subcategoryId + '/products',
+                success: function (products) {
+                    if (products.length > 0) {
+                        $('#categoryBreadcrumb').attr('href', '/categories/' + products[0].categoryId + '/subcategories').text(products[0].categoryName);
+                        $('#subcategoryBreadcrumb').html(products[0].subcategoryName);
+                        $('#subcategoryName').html(products[0].subcategoryName);
+                        var productsHtml = "";
+                        $.each(products, function (index, product) {
+                            var imgUrl = baseImageUrl + '/products/' + product.id + imgExt;
+                            productsHtml += "<div class='image-box'><a href='/products/" + product.id + "'>";
+                            productsHtml += "<img src='" + imgUrl + "' alt='" + product.name + "'></a>";
+                            productsHtml += "<p>" + product.name + "</p></div>";
+                        });
+                        var $products = $('#products');
+                        $products.html(productsHtml);
+                        $products.toggleClass('loading');
+                    }
+                    else {
+                        $('#productSection').html('<h3>There are no products for selected subcategory, please check url and try again..</h3>');
+                    }
+                },
+                error: function (x, y, z) {
+                    $('#productSection').html('<h3>Error retrieving products information, please check url and try again..</h3>');
+                }
+            });
+        });
+    </script>
+}

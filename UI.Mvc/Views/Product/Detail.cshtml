@@ -1,0 +1,214 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@Html.Hidden("id", @ViewContext.RouteData.Values["productId"])
+<h2 id="productName"></h2>
+
+<div id="productSection">
+    <p class="breadcrumbs">
+        <a href="/categories">All Categories</a>
+        > <a href="#" id="categoryBreadcrumb"></a>
+        > <a href="#" id="subcategoryBreadcrumb"></a>
+        > <span id="productBreadcrumb"></span>
+    </p>
+
+    <div id="productInformation" class="loading">
+        <table>
+            <tr>
+                <td><div class="image-box" id="productImage"></div></td>
+                <td><div id="productDetails"></div></td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        @if (UI.Mvc.Helpers.AuthenticatedSessionHelper.IsValidAuthenticatedSession)
+                        {
+                            @:Quantity:
+                            <input type="text" id="txtQuantity" maxlength="2" style="width: 25px" value="1" />
+                        
+                            <button id="addButton" onclick="addToCart()">Add To Cart</button>
+                        }
+                        else
+                        {
+                            @:Please @Html.ActionLink("login", "Login", "Account", new { returnUrl = "/products/" + @ViewContext.RouteData.Values["productId"] }, null) or @Html.ActionLink("register", "Register", "Account", new { returnUrl = "/products/" + @ViewContext.RouteData.Values["productId"] }, null) to add the product to your cart.
+                        }
+                    </p>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+</div>
+
+<div id="productRecommendationsSection">
+    <p>The people bought this product also bought the following product(s):</p>
+    <div id="productRecommendations" class="loading"></div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        var productName = "";
+        var productPrice = 0;
+        var $txtQuantity = $('#txtQuantity');
+        $(function () {
+            // disable pasting data
+            $txtQuantity.bind('paste', function () {
+                return false;
+            });
+
+            // restrict input to postive numbers only
+            $txtQuantity.keydown(function (event) {
+                // Allow: backspace, delete, tab, escape, and enter
+                if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    // Allow: Ctrl+A
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    // Allow: home, end, left, right
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+
+                    return;
+                }
+                else {
+                    // Ensure that it is a number and stop the keypress
+                    if (event.shiftKey || $txtQuantity.val().length > 2 || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                        event.preventDefault();
+                    }
+                }
+            });
+
+            var productId = $('#id').val();
+
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                timeout: 15000,
+                url: baseApiUrl + '/products/' + productId,
+                success: function (product) {
+                    productName = product.name;
+                    productPrice = product.listPrice;
+
+                    $('#categoryBreadcrumb').attr('href', '/categories/' + product.categoryId + '/subcategories').text(product.categoryName);
+                    $('#subcategoryBreadcrumb').attr('href', '/subcategories/' + product.parentId + '/products').text(product.subcategoryName);
+                    $('#productBreadcrumb').html(product.name);
+                    $('#productName').html(productName);
+
+                    var imgUrl = baseImageUrl + '/products/' + product.id + imgExt;
+                    var productImageHtml = "<img src='" + imgUrl + "' alt='" + product.name + "'><p>" + product.name + "</p>"
+                    $('#productImage').html(productImageHtml);
+
+                    var productDetailsHtml = '';
+
+                    if (product.productNumber != null) {
+                        productDetailsHtml = "<p>Product Number: " + product.productNumber + "</p>";
+                    }
+
+                    if (product.color != null) {
+                        productDetailsHtml += "<p>Color: " + product.color + "</p>";
+                    }
+
+                    productDetailsHtml += "<p>List Price: $" + productPrice + "</p>";
+
+                    if (product.size != null) {
+                        productDetailsHtml += "<p>Size: " + product.size + product.sizeUnitMeasureCode + "</p>";
+                    }
+
+                    if (product.weight != null) {
+                        productDetailsHtml += "<p>Weight: " + product.weight + product.weightUnitMeasureCode + "</p>";
+                    }
+
+                    if (product.class != null) {
+                        productDetailsHtml += "<p>Class: " + product.class + "</p>";
+                    }
+
+                    if (product.style != null) {
+                        productDetailsHtml += "<p>Style: " + product.style + "</p>";
+                    }
+
+                    $('#productDetails').html(productDetailsHtml);
+                    $('#productInformation').toggleClass('loading');
+                },
+                error: function (x, y, z) {
+                    $('#productSection').html('<h3>Error retrieving product information, check url and try again..</h3>');
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                timeout: 15000,
+                url: baseApiUrl + '/products/' + productId + '/recommendations',
+                success: function (recommendations) {
+                    var recommendationHtml = "";
+                    $.each(recommendations, function (index, recommendation) {
+                        var imgUrl = baseImageUrl + '/products/' + recommendation.id + imgExt;
+                        recommendationHtml += "<div class='image-box'><a href='/products/" + recommendation.id + "'>";
+                        recommendationHtml += "<img src='" + imgUrl + "' alt='" + recommendation.name + "'></a>";
+                        recommendationHtml += "<p>" + recommendation.name + "</p></div>";
+
+                    });
+
+                    var $productRecommendations = $('#productRecommendations');
+                    $productRecommendations.html(recommendationHtml);
+                    $productRecommendations.toggleClass('loading');
+                },
+                error: function (x, y, z) {
+                    $('#productRecommendationsSection').html('');
+                }
+            });
+        });
+
+        function addToCart() {
+            if ($txtQuantity.val() < 1 || $txtQuantity.val() > 99) {
+                alert('Please enter a valid quantity and try again..');
+                return;
+            }
+
+            $('#addButton').attr('disabled', 'disabled');
+            $('#addButton').toggleClass('loading-tiny');
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '/account/GetCurrentUserSessionKey',
+                success: function (result) {
+                    var shoppingCartItem = {
+                        Quantity: $txtQuantity.val(),
+                        ProductId: $('#id').val(),
+                        ProductName: productName,
+                        ProductPrice: productPrice,
+                        ShoppingCartId: result.userSessionKey
+                    };
+
+                    $.ajax({
+                        url: baseApiUrl + "/cart/add",
+                        type: 'POST',
+                        crossDomain: true,
+                        data: JSON.stringify(shoppingCartItem),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            window.location = '/cart/additem';
+                        },
+
+                        error: function (x, y, z) {
+                            if (x.responseText != '') {
+                                alert(z + ':\n' + JSON.parse(x.responseText).message);
+                            }
+                            else {
+                                alert('An unexpected error has ocurred, please retry later..');
+                            }
+                            $('#addButton').toggleClass('loading-tiny');
+                            $('#addButton').removeAttr('disabled');
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

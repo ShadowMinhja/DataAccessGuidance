@@ -1,0 +1,150 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+<div id="orderDetails" class="loading">
+    <h3>Your order details:</h3>
+    <fieldset>
+        <ol>
+            <li>Tracking Id:
+                <div id="trackingId"></div>
+            </li>
+        </ol>
+
+        <ol id="statusContainer">
+            <li>Status:
+                <div id="status"></div>
+            </li>
+        </ol>
+
+        <ol>
+            <li>Shipping Address:
+                 <div id="shippingAddress"></div>
+            </li>
+        </ol>
+
+        <ol>
+            <li>Billing Address:
+                <div id="billingAddress"></div>
+            </li>
+        </ol>
+
+        <ol>
+            <li>Credit Card:
+                <div id="creditCard"></div>
+            </li>
+        </ol>
+
+        <ol>
+            <li>Due Date:
+                <div id="dueDate"></div>
+            </li>
+        </ol>
+
+        <ol>
+            <li>Order Date:
+                <div id="orderDate"></div>
+            </li>
+        </ol>
+
+        <ol id="lastUpdateContainer">
+            <li>Last Update:
+                <div id="lastUpdate"></div>
+            </li>
+        </ol>
+
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Price per Item</th>
+                    <th scope="col">SubTotal</th>
+                </tr>
+            </thead>
+            <tbody id="orderItems"></tbody>
+        </table>
+    </fieldset>
+</div>
+
+<script type="text/javascript">
+    function retrieveOrderDetails(serviceUrl, displayError) {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '/account/GetCurrentUserSessionKey',
+            success: function (result) {
+                $.ajax({
+                    type: "GET",
+                    dataType: "jsonp",
+                    timeout: 15000,
+                    url: serviceUrl,
+                    success: function (order) {
+                        $('#trackingId').html(order.trackingId);
+
+                        if (typeof order.status === 'undefined') {
+                            $('#statusContainer').html('');
+                        }
+                        else {
+                            $('#status').html(order.status);
+                        }
+
+                        $('#shippingAddress').html(order.shippingAddress.addressLine1
+                            + ', ' + order.shippingAddress.city
+                            + ' (' + order.shippingAddress.postalCode + ')');
+
+                        $('#billingAddress').html(order.billingAddress.addressLine1
+                            + ', ' + order.billingAddress.city
+                            + ' (' + order.billingAddress.postalCode + ')');
+
+                        $('#creditCard').html(order.creditCard.cardType
+                            + ' - last digits: ' + order.creditCard.cardNumber);
+
+                        $('#dueDate').html(new Date(order.dueDate).toDateString());
+
+                        $('#orderDate').html(new Date(order.orderDate).toDateString());
+
+                        if (typeof order.modifiedDate === 'undefined') {
+                            $('#lastUpdateContainer').html('');
+                        }
+                        else {
+                            $('#lastUpdate').html(new Date(order.modifiedDate).toDateString());
+                        }
+
+                        var orderItems = '';
+                        var total = 0;
+                        $.each(order.orderItems, function (index, orderItem) {
+                            total += (orderItem.quantity * orderItem.unitPrice);
+                            orderItems += '<tr>'
+                                + '<td>' + orderItem.quantity + '</td>'
+                                + '<td>' + orderItem.productName + '</td>'
+                                + '<td class="number">$' + orderItem.unitPrice.toFixed(2) + '</td>'
+                                + '<td class="number">$' + (orderItem.quantity * orderItem.unitPrice).toFixed(2) + '</td>'
+                                + '</tr>';
+                        });
+                        orderItems += '<tr>'
+                            + '<td></td><td></td><td></td>'
+                            + '<td class="number-bold">$' + total.toFixed(2) + '</td>'
+                            + '</tr>';
+
+                        $('#orderItems').html(orderItems);
+                    },
+                    error: function (x, y, z) {
+                        if (displayError) {
+                            $('#orderDetails').html('<h3>Error getting order details, please check url and try again..</h3>');
+                        }
+                        else {
+                            $('#orderDetails').html('');
+                        }
+                    }
+                }).always(function () { $('#orderDetails').toggleClass('loading'); });
+            }
+        });
+    }
+</script>

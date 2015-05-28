@@ -1,0 +1,28 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@{
+    ViewBag.Title = "Order Details";
+}
+
+@Html.Partial("_OrderDetail")
+
+<p>
+    @Html.ActionLink("<< Back to Orders History", "Index", "Order", routeValues: null, htmlAttributes: new { id = "ordersLink" })
+</p>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            retrieveOrderDetails(baseApiUrl + '/orders/history/@this.ViewContext.RouteData.Values["historyId"]', true);
+        });
+    </script>
+}

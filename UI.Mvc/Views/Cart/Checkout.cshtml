@@ -1,0 +1,196 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@Html.AntiForgeryToken()
+
+<hgroup class="title">
+    <h1>Checkout</h1>
+</hgroup>
+
+<section class="checkoutForm">
+    <div id="checkout" class="loading">
+        <h3>You have <span id="cartCount"></span> item(s) in your cart</h3>
+
+        <fieldset>
+            <legend>Checkout Form</legend>
+            <p>Shipping Address</p>
+            <ol>
+                <li>
+                    <select data-val="true" data-val-required="The Shipping Address field is required." id="ddlShippingAddress" name="ShippingAddress"></select>
+                    <span class="field-validation-valid" data-valmsg-for="ShippingAddress" data-valmsg-replace="true"></span>
+                </li>
+            </ol>
+
+            <p>Billing Address</p>
+            <ol>
+                <li>
+                    <select data-val="true" data-val-required="The Billing Address field is required." id="ddlBillingAddress" name="BillingAddress"></select>
+                    <span class="field-validation-valid" data-valmsg-for="BillingAddress" data-valmsg-replace="true"></span>
+                </li>
+            </ol>
+
+            <p>Credit Card</p>
+            <ol>
+                <li>
+                    <select data-val="true" data-val-required="The Credit Card field is required." id="ddlCreditCard" name="CreditCard"></select>
+                    <span class="field-validation-valid" data-valmsg-for="CreditCard" data-valmsg-replace="true"></span>
+                </li>
+            </ol>
+
+            <h3>The total amount of your order is: $<span id="orderTotal"></span></h3>
+
+            <p>
+                <button id="confirmButton" onclick="postOrder();">Confirm</button>
+            </p>
+        </fieldset>
+    </div>
+</section>
+<h3>Shopping Cart Item(s)</h3>
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Quantity</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Price per Item</th>
+            <th scope="col">SubTotal</th>
+        </tr>
+    </thead>
+    <tbody id="orderItems"></tbody>
+</table>
+
+@section scripts
+{
+    <script type="text/javascript">
+        var userSessionKey = '';
+        $(function () {
+            $('#confirmButton').attr("disabled", true); // disable the checkout button
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '/account/GetCurrentUserSessionKey',
+                success: function (result) {
+                    userSessionKey = result.userSessionKey;
+
+                    $.ajax({
+                        type: "GET",
+                        dataType: "jsonp",
+                        timeout: 15000,
+                        url: baseApiUrl + '/cart/' + userSessionKey,
+                        success: function (shoppingCartItems) {
+                            var orderItems = '';
+                            var total = 0;
+                            $.each(shoppingCartItems, function (index, cartItem) {
+                                total += (cartItem.quantity * cartItem.productPrice);
+                                orderItems += '<tr>'
+                                    + '<td>' + cartItem.quantity + '</td>'
+                                    + '<td>' + cartItem.productName + '</td>'
+                                    + '<td class="number">$' + cartItem.productPrice+ '</td>'
+                                    + '<td class="number">$' + (cartItem.quantity * cartItem.productPrice).toFixed(2) + '</td>'
+                                    + '</tr>';
+                            });
+                            orderItems += '<tr>'
+                                + '<td></td><td></td><td></td>'
+                                + '</tr>';
+
+                            $('#orderItems').html(orderItems);
+
+                            $('#orderTotal').text(total.toFixed(2));
+                            $('#cartCount').text(shoppingCartItems.length);
+
+                            if (shoppingCartItems.length == 0) {
+                                $('#checkout').html('<h3>There are no items in the shopping cart!</h3><p><a href="/categories">Go shopping!</a></p>');
+                                $('#checkout').toggleClass('loading');
+                                return;
+                            }
+
+                            $.ajax({
+                                type: "GET",
+                                dataType: "jsonp",
+                                url: baseApiUrl + '/account/' + userSessionKey,
+                                success: function (personDetail) {
+                                    var addressHtml = '';
+                                    $.each(personDetail.addresses, function (index, address) {
+                                        addressHtml += '<option value="' + address.id + '">'
+                                            + address.addressLine1
+                                            + ', ' + address.city
+                                            + ', ' + address.countryName
+                                            + ' (' + address.postalCode + ')'
+                                            + '</option>';
+                                    });
+                                    $('#ddlShippingAddress').append(addressHtml);
+                                    $('#ddlBillingAddress').append(addressHtml);
+
+                                    var creditCardHtml = '';
+                                    $.each(personDetail.creditCards, function (index, creditCard) {
+                                        creditCardHtml += '<option value="' + creditCard.id + '">'
+                                            + creditCard.cardType
+                                            + ' - last digits ' + creditCard.cardNumber
+                                            + '</option>';
+                                    });
+                                    $('#ddlCreditCard').append(creditCardHtml);
+
+                                    $('#confirmButton').attr("disabled", false);
+                                }
+                            });
+
+                            // show form after #items has been loaded (show filling selects)
+                            $('#checkout').toggleClass('loading');
+                        }
+                    });
+                }
+            });
+        });
+
+        function postOrder() {
+            $('#confirmButton').attr('disabled', 'disabled');
+            $('#confirmButton').toggleClass('loading-tiny');
+
+            var order = {
+                CartId: userSessionKey,
+                CreditCard: $('#ddlCreditCard').val(),
+                BillingAddress: $('#ddlBillingAddress').val(),
+                ShippingAddress: $('#ddlShippingAddress').val()
+            };
+
+            $.ajax({
+                url: '/Cart/Checkout',
+                type: 'POST',
+                crossDomain: true,
+                data: JSON.stringify(order),
+                contentType: "application/json;charset=utf-8",
+                statusCode: {
+                    200: function (cartCheckoutItems) {
+                        // the request was ok, but there was an issue with inventory/price with some items in the shopping cart
+                        alert('There has been a change of inventory or price for some items in your cart. Click ok to see these changes.');
+                        window.location = '/cart/index';
+                    },
+                    201: function (result) {
+                        // the request was ok and the order was created
+                        if (result.orderId[0] == '"') {
+                            result = result.orderId.substr(1, result.length - 2);
+                        }
+                        window.location = '/cart/checkoutthanks/' + result.orderId;
+                    }
+                },
+                error: function (x, y, z) {
+                    if (x.responseText != '') {
+                        alert(z);
+                    }
+                    else {
+                        alert('An unexpected error has ocurred, please retry later..');
+                    }
+                    $('#confirmButton').toggleClass('loading-tiny');
+                    $('#confirmButton').removeAttr('disabled');
+                }
+            });
+        }
+    </script>
+}

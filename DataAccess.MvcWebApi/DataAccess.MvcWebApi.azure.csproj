@@ -1,0 +1,987 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{91621B0E-8D23-4A81-8143-69BC04CDA8AE}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataAccess.MvcWebApi</RootNamespace>
+    <AssemblyName>DataAccess.MvcWebApi</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisAdditionalOptions>/assemblyCompareMode:StrongNameIgnoringVersion</CodeAnalysisAdditionalOptions>
+    <CodeAnalysisRuleSet>..\dag.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisAdditionalOptions>/assemblyCompareMode:StrongNameIgnoringVersion</CodeAnalysisAdditionalOptions>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.2\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.2\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.WebApi">
+      <HintPath>..\packages\Unity.AspNet.WebApi.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Spatial, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Spatial.5.6.2\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.4.0.1\lib\net40\System.Web.Http.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Providers">
+      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.1.2\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Tracing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Tracing.4.0.0\lib\net40\System.Web.Http.Tracing.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebActivatorEx.2.0.1\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebApiContrib.Formatting.Jsonp">
+      <HintPath>..\packages\WebApiContrib.Formatting.Jsonp.0.9.5.0\lib\net40\WebApiContrib.Formatting.Jsonp.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\FormatterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="App_Start\UnityWebApiActivator.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
+    <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
+    <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageAreaRegistration.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageConfigurationExtensions.cs" />
+    <Compile Include="Areas\HelpPage\Models\HelpPageApiModel.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleKey.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ImageSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\InvalidSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ObjectGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
+    <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\StatesController.cs" />
+    <Compile Include="Controllers\SubcategoriesController.cs" />
+    <Compile Include="Filters\InternalErrorHandler.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Handlers\CORSHandler.cs" />
+    <Compile Include="Models\AddressInfo.cs" />
+    <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Models\CartItemDelete.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CreditCardInfo.cs" />
+    <Compile Include="Models\LoginInfo.cs" />
+    <Compile Include="Models\ModelBase.cs" />
+    <Compile Include="Models\OrderDetail.cs" />
+    <Compile Include="Models\OrderHistoryInfo.cs" />
+    <Compile Include="Models\OrderInfo.cs" />
+    <Compile Include="Models\OrderItemInfo.cs" />
+    <Compile Include="Models\PersonDetail.cs" />
+    <Compile Include="Models\ProductDetail.cs" />
+    <Compile Include="Models\ProductInfo.cs" />
+    <Compile Include="Models\Recommendation.cs" />
+    <Compile Include="Models\RegistrationInfo.cs" />
+    <Compile Include="Models\Subcategory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WebRole.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.menu.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.spinner.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\jquery.ui.tooltip.css" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.menu.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.spinner.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Areas\HelpPage\Views\Web.config" />
+    <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Images\categories\1.gif" />
+    <Content Include="Images\categories\2.gif" />
+    <Content Include="Images\categories\3.gif" />
+    <Content Include="Images\categories\4.gif" />
+    <Content Include="Images\products\1.gif" />
+    <Content Include="Images\products\2.gif" />
+    <Content Include="Images\products\3.gif" />
+    <Content Include="Images\products\316.gif" />
+    <Content Include="Images\products\317.gif" />
+    <Content Include="Images\products\318.gif" />
+    <Content Include="Images\products\319.gif" />
+    <Content Include="Images\products\320.gif" />
+    <Content Include="Images\products\321.gif" />
+    <Content Include="Images\products\322.gif" />
+    <Content Include="Images\products\323.gif" />
+    <Content Include="Images\products\324.gif" />
+    <Content Include="Images\products\325.gif" />
+    <Content Include="Images\products\326.gif" />
+    <Content Include="Images\products\327.gif" />
+    <Content Include="Images\products\328.gif" />
+    <Content Include="Images\products\329.gif" />
+    <Content Include="Images\products\330.gif" />
+    <Content Include="Images\products\331.gif" />
+    <Content Include="Images\products\332.gif" />
+    <Content Include="Images\products\341.gif" />
+    <Content Include="Images\products\342.gif" />
+    <Content Include="Images\products\343.gif" />
+    <Content Include="Images\products\344.gif" />
+    <Content Include="Images\products\345.gif" />
+    <Content Include="Images\products\346.gif" />
+    <Content Include="Images\products\347.gif" />
+    <Content Include="Images\products\348.gif" />
+    <Content Include="Images\products\349.gif" />
+    <Content Include="Images\products\350.gif" />
+    <Content Include="Images\products\351.gif" />
+    <Content Include="Images\products\352.gif" />
+    <Content Include="Images\products\355.gif" />
+    <Content Include="Images\products\356.gif" />
+    <Content Include="Images\products\357.gif" />
+    <Content Include="Images\products\358.gif" />
+    <Content Include="Images\products\359.gif" />
+    <Content Include="Images\products\360.gif" />
+    <Content Include="Images\products\361.gif" />
+    <Content Include="Images\products\362.gif" />
+    <Content Include="Images\products\363.gif" />
+    <Content Include="Images\products\364.gif" />
+    <Content Include="Images\products\365.gif" />
+    <Content Include="Images\products\366.gif" />
+    <Content Include="Images\products\367.gif" />
+    <Content Include="Images\products\368.gif" />
+    <Content Include="Images\products\369.gif" />
+    <Content Include="Images\products\370.gif" />
+    <Content Include="Images\products\371.gif" />
+    <Content Include="Images\products\372.gif" />
+    <Content Include="Images\products\373.gif" />
+    <Content Include="Images\products\374.gif" />
+    <Content Include="Images\products\375.gif" />
+    <Content Include="Images\products\376.gif" />
+    <Content Include="Images\products\377.gif" />
+    <Content Include="Images\products\378.gif" />
+    <Content Include="Images\products\379.gif" />
+    <Content Include="Images\products\380.gif" />
+    <Content Include="Images\products\381.gif" />
+    <Content Include="Images\products\382.gif" />
+    <Content Include="Images\products\383.gif" />
+    <Content Include="Images\products\384.gif" />
+    <Content Include="Images\products\385.gif" />
+    <Content Include="Images\products\386.gif" />
+    <Content Include="Images\products\387.gif" />
+    <Content Include="Images\products\388.gif" />
+    <Content Include="Images\products\389.gif" />
+    <Content Include="Images\products\390.gif" />
+    <Content Include="Images\products\391.gif" />
+    <Content Include="Images\products\392.gif" />
+    <Content Include="Images\products\393.gif" />
+    <Content Include="Images\products\394.gif" />
+    <Content Include="Images\products\395.gif" />
+    <Content Include="Images\products\396.gif" />
+    <Content Include="Images\products\397.gif" />
+    <Content Include="Images\products\398.gif" />
+    <Content Include="Images\products\399.gif" />
+    <Content Include="Images\products\4.gif" />
+    <Content Include="Images\products\400.gif" />
+    <Content Include="Images\products\401.gif" />
+    <Content Include="Images\products\402.gif" />
+    <Content Include="Images\products\403.gif" />
+    <Content Include="Images\products\404.gif" />
+    <Content Include="Images\products\405.gif" />
+    <Content Include="Images\products\406.gif" />
+    <Content Include="Images\products\407.gif" />
+    <Content Include="Images\products\408.gif" />
+    <Content Include="Images\products\409.gif" />
+    <Content Include="Images\products\410.gif" />
+    <Content Include="Images\products\411.gif" />
+    <Content Include="Images\products\412.gif" />
+    <Content Include="Images\products\413.gif" />
+    <Content Include="Images\products\414.gif" />
+    <Content Include="Images\products\415.gif" />
+    <Content Include="Images\products\416.gif" />
+    <Content Include="Images\products\417.gif" />
+    <Content Include="Images\products\418.gif" />
+    <Content Include="Images\products\419.gif" />
+    <Content Include="Images\products\420.gif" />
+    <Content Include="Images\products\421.gif" />
+    <Content Include="Images\products\422.gif" />
+    <Content Include="Images\products\423.gif" />
+    <Content Include="Images\products\424.gif" />
+    <Content Include="Images\products\425.gif" />
+    <Content Include="Images\products\426.gif" />
+    <Content Include="Images\products\427.gif" />
+    <Content Include="Images\products\428.gif" />
+    <Content Include="Images\products\429.gif" />
+    <Content Include="Images\products\430.gif" />
+    <Content Include="Images\products\431.gif" />
+    <Content Include="Images\products\432.gif" />
+    <Content Include="Images\products\433.gif" />
+    <Content Include="Images\products\434.gif" />
+    <Content Include="Images\products\435.gif" />
+    <Content Include="Images\products\436.gif" />
+    <Content Include="Images\products\437.gif" />
+    <Content Include="Images\products\438.gif" />
+    <Content Include="Images\products\439.gif" />
+    <Content Include="Images\products\440.gif" />
+    <Content Include="Images\products\441.gif" />
+    <Content Include="Images\products\442.gif" />
+    <Content Include="Images\products\443.gif" />
+    <Content Include="Images\products\444.gif" />
+    <Content Include="Images\products\445.gif" />
+    <Content Include="Images\products\446.gif" />
+    <Content Include="Images\products\447.gif" />
+    <Content Include="Images\products\448.gif" />
+    <Content Include="Images\products\449.gif" />
+    <Content Include="Images\products\450.gif" />
+    <Content Include="Images\products\451.gif" />
+    <Content Include="Images\products\452.gif" />
+    <Content Include="Images\products\453.gif" />
+    <Content Include="Images\products\454.gif" />
+    <Content Include="Images\products\455.gif" />
+    <Content Include="Images\products\456.gif" />
+    <Content Include="Images\products\457.gif" />
+    <Content Include="Images\products\458.gif" />
+    <Content Include="Images\products\459.gif" />
+    <Content Include="Images\products\460.gif" />
+    <Content Include="Images\products\461.gif" />
+    <Content Include="Images\products\462.gif" />
+    <Content Include="Images\products\463.gif" />
+    <Content Include="Images\products\464.gif" />
+    <Content Include="Images\products\465.gif" />
+    <Content Include="Images\products\466.gif" />
+    <Content Include="Images\products\467.gif" />
+    <Content Include="Images\products\468.gif" />
+    <Content Include="Images\products\469.gif" />
+    <Content Include="Images\products\470.gif" />
+    <Content Include="Images\products\471.gif" />
+    <Content Include="Images\products\472.gif" />
+    <Content Include="Images\products\473.gif" />
+    <Content Include="Images\products\474.gif" />
+    <Content Include="Images\products\475.gif" />
+    <Content Include="Images\products\476.gif" />
+    <Content Include="Images\products\477.gif" />
+    <Content Include="Images\products\478.gif" />
+    <Content Include="Images\products\479.gif" />
+    <Content Include="Images\products\480.gif" />
+    <Content Include="Images\products\481.gif" />
+    <Content Include="Images\products\482.gif" />
+    <Content Include="Images\products\483.gif" />
+    <Content Include="Images\products\484.gif" />
+    <Content Include="Images\products\485.gif" />
+    <Content Include="Images\products\486.gif" />
+    <Content Include="Images\products\487.gif" />
+    <Content Include="Images\products\488.gif" />
+    <Content Include="Images\products\489.gif" />
+    <Content Include="Images\products\490.gif" />
+    <Content Include="Images\products\491.gif" />
+    <Content Include="Images\products\492.gif" />
+    <Content Include="Images\products\493.gif" />
+    <Content Include="Images\products\494.gif" />
+    <Content Include="Images\products\495.gif" />
+    <Content Include="Images\products\496.gif" />
+    <Content Include="Images\products\497.gif" />
+    <Content Include="Images\products\504.gif" />
+    <Content Include="Images\products\505.gif" />
+    <Content Include="Images\products\506.gif" />
+    <Content Include="Images\products\507.gif" />
+    <Content Include="Images\products\508.gif" />
+    <Content Include="Images\products\509.gif" />
+    <Content Include="Images\products\510.gif" />
+    <Content Include="Images\products\511.gif" />
+    <Content Include="Images\products\512.gif" />
+    <Content Include="Images\products\513.gif" />
+    <Content Include="Images\products\514.gif" />
+    <Content Include="Images\products\515.gif" />
+    <Content Include="Images\products\516.gif" />
+    <Content Include="Images\products\517.gif" />
+    <Content Include="Images\products\518.gif" />
+    <Content Include="Images\products\519.gif" />
+    <Content Include="Images\products\520.gif" />
+    <Content Include="Images\products\521.gif" />
+    <Content Include="Images\products\522.gif" />
+    <Content Include="Images\products\523.gif" />
+    <Content Include="Images\products\524.gif" />
+    <Content Include="Images\products\525.gif" />
+    <Content Include="Images\products\526.gif" />
+    <Content Include="Images\products\527.gif" />
+    <Content Include="Images\products\528.gif" />
+    <Content Include="Images\products\529.gif" />
+    <Content Include="Images\products\530.gif" />
+    <Content Include="Images\products\531.gif" />
+    <Content Include="Images\products\532.gif" />
+    <Content Include="Images\products\533.gif" />
+    <Content Include="Images\products\534.gif" />
+    <Content Include="Images\products\535.gif" />
+    <Content Include="Images\products\679.gif" />
+    <Content Include="Images\products\680.gif" />
+    <Content Include="Images\products\706.gif" />
+    <Content Include="Images\products\707.gif" />
+    <Content Include="Images\products\708.gif" />
+    <Content Include="Images\products\709.gif" />
+    <Content Include="Images\products\710.gif" />
+    <Content Include="Images\products\711.gif" />
+    <Content Include="Images\products\712.gif" />
+    <Content Include="Images\products\713.gif" />
+    <Content Include="Images\products\714.gif" />
+    <Content Include="Images\products\715.gif" />
+    <Content Include="Images\products\716.gif" />
+    <Content Include="Images\products\717.gif" />
+    <Content Include="Images\products\718.gif" />
+    <Content Include="Images\products\719.gif" />
+    <Content Include="Images\products\720.gif" />
+    <Content Include="Images\products\721.gif" />
+    <Content Include="Images\products\722.gif" />
+    <Content Include="Images\products\723.gif" />
+    <Content Include="Images\products\724.gif" />
+    <Content Include="Images\products\725.gif" />
+    <Content Include="Images\products\726.gif" />
+    <Content Include="Images\products\727.gif" />
+    <Content Include="Images\products\728.gif" />
+    <Content Include="Images\products\729.gif" />
+    <Content Include="Images\products\730.gif" />
+    <Content Include="Images\products\731.gif" />
+    <Content Include="Images\products\732.gif" />
+    <Content Include="Images\products\733.gif" />
+    <Content Include="Images\products\734.gif" />
+    <Content Include="Images\products\735.gif" />
+    <Content Include="Images\products\736.gif" />
+    <Content Include="Images\products\737.gif" />
+    <Content Include="Images\products\738.gif" />
+    <Content Include="Images\products\739.gif" />
+    <Content Include="Images\products\740.gif" />
+    <Content Include="Images\products\741.gif" />
+    <Content Include="Images\products\742.gif" />
+    <Content Include="Images\products\743.gif" />
+    <Content Include="Images\products\744.gif" />
+    <Content Include="Images\products\745.gif" />
+    <Content Include="Images\products\746.gif" />
+    <Content Include="Images\products\747.gif" />
+    <Content Include="Images\products\748.gif" />
+    <Content Include="Images\products\749.gif" />
+    <Content Include="Images\products\750.gif" />
+    <Content Include="Images\products\751.gif" />
+    <Content Include="Images\products\752.gif" />
+    <Content Include="Images\products\753.gif" />
+    <Content Include="Images\products\754.gif" />
+    <Content Include="Images\products\755.gif" />
+    <Content Include="Images\products\756.gif" />
+    <Content Include="Images\products\757.gif" />
+    <Content Include="Images\products\758.gif" />
+    <Content Include="Images\products\759.gif" />
+    <Content Include="Images\products\760.gif" />
+    <Content Include="Images\products\761.gif" />
+    <Content Include="Images\products\762.gif" />
+    <Content Include="Images\products\763.gif" />
+    <Content Include="Images\products\764.gif" />
+    <Content Include="Images\products\765.gif" />
+    <Content Include="Images\products\766.gif" />
+    <Content Include="Images\products\767.gif" />
+    <Content Include="Images\products\768.gif" />
+    <Content Include="Images\products\769.gif" />
+    <Content Include="Images\products\770.gif" />
+    <Content Include="Images\products\771.gif" />
+    <Content Include="Images\products\772.gif" />
+    <Content Include="Images\products\773.gif" />
+    <Content Include="Images\products\774.gif" />
+    <Content Include="Images\products\775.gif" />
+    <Content Include="Images\products\776.gif" />
+    <Content Include="Images\products\777.gif" />
+    <Content Include="Images\products\778.gif" />
+    <Content Include="Images\products\779.gif" />
+    <Content Include="Images\products\780.gif" />
+    <Content Include="Images\products\781.gif" />
+    <Content Include="Images\products\782.gif" />
+    <Content Include="Images\products\783.gif" />
+    <Content Include="Images\products\784.gif" />
+    <Content Include="Images\products\785.gif" />
+    <Content Include="Images\products\786.gif" />
+    <Content Include="Images\products\787.gif" />
+    <Content Include="Images\products\788.gif" />
+    <Content Include="Images\products\789.gif" />
+    <Content Include="Images\products\790.gif" />
+    <Content Include="Images\products\791.gif" />
+    <Content Include="Images\products\792.gif" />
+    <Content Include="Images\products\793.gif" />
+    <Content Include="Images\products\794.gif" />
+    <Content Include="Images\products\795.gif" />
+    <Content Include="Images\products\796.gif" />
+    <Content Include="Images\products\797.gif" />
+    <Content Include="Images\products\798.gif" />
+    <Content Include="Images\products\799.gif" />
+    <Content Include="Images\products\800.gif" />
+    <Content Include="Images\products\801.gif" />
+    <Content Include="Images\products\802.gif" />
+    <Content Include="Images\products\803.gif" />
+    <Content Include="Images\products\804.gif" />
+    <Content Include="Images\products\805.gif" />
+    <Content Include="Images\products\806.gif" />
+    <Content Include="Images\products\807.gif" />
+    <Content Include="Images\products\808.gif" />
+    <Content Include="Images\products\809.gif" />
+    <Content Include="Images\products\810.gif" />
+    <Content Include="Images\products\811.gif" />
+    <Content Include="Images\products\812.gif" />
+    <Content Include="Images\products\813.gif" />
+    <Content Include="Images\products\814.gif" />
+    <Content Include="Images\products\815.gif" />
+    <Content Include="Images\products\816.gif" />
+    <Content Include="Images\products\817.gif" />
+    <Content Include="Images\products\818.gif" />
+    <Content Include="Images\products\819.gif" />
+    <Content Include="Images\products\820.gif" />
+    <Content Include="Images\products\821.gif" />
+    <Content Include="Images\products\822.gif" />
+    <Content Include="Images\products\823.gif" />
+    <Content Include="Images\products\824.gif" />
+    <Content Include="Images\products\825.gif" />
+    <Content Include="Images\products\826.gif" />
+    <Content Include="Images\products\827.gif" />
+    <Content Include="Images\products\828.gif" />
+    <Content Include="Images\products\829.gif" />
+    <Content Include="Images\products\830.gif" />
+    <Content Include="Images\products\831.gif" />
+    <Content Include="Images\products\832.gif" />
+    <Content Include="Images\products\833.gif" />
+    <Content Include="Images\products\834.gif" />
+    <Content Include="Images\products\835.gif" />
+    <Content Include="Images\products\836.gif" />
+    <Content Include="Images\products\837.gif" />
+    <Content Include="Images\products\838.gif" />
+    <Content Include="Images\products\839.gif" />
+    <Content Include="Images\products\840.gif" />
+    <Content Include="Images\products\841.gif" />
+    <Content Include="Images\products\842.gif" />
+    <Content Include="Images\products\843.gif" />
+    <Content Include="Images\products\844.gif" />
+    <Content Include="Images\products\845.gif" />
+    <Content Include="Images\products\846.gif" />
+    <Content Include="Images\products\847.gif" />
+    <Content Include="Images\products\848.gif" />
+    <Content Include="Images\products\849.gif" />
+    <Content Include="Images\products\850.gif" />
+    <Content Include="Images\products\851.gif" />
+    <Content Include="Images\products\852.gif" />
+    <Content Include="Images\products\853.gif" />
+    <Content Include="Images\products\854.gif" />
+    <Content Include="Images\products\855.gif" />
+    <Content Include="Images\products\856.gif" />
+    <Content Include="Images\products\857.gif" />
+    <Content Include="Images\products\858.gif" />
+    <Content Include="Images\products\859.gif" />
+    <Content Include="Images\products\860.gif" />
+    <Content Include="Images\products\861.gif" />
+    <Content Include="Images\products\862.gif" />
+    <Content Include="Images\products\863.gif" />
+    <Content Include="Images\products\864.gif" />
+    <Content Include="Images\products\865.gif" />
+    <Content Include="Images\products\866.gif" />
+    <Content Include="Images\products\867.gif" />
+    <Content Include="Images\products\868.gif" />
+    <Content Include="Images\products\869.gif" />
+    <Content Include="Images\products\870.gif" />
+    <Content Include="Images\products\871.gif" />
+    <Content Include="Images\products\872.gif" />
+    <Content Include="Images\products\873.gif" />
+    <Content Include="Images\products\874.gif" />
+    <Content Include="Images\products\875.gif" />
+    <Content Include="Images\products\876.gif" />
+    <Content Include="Images\products\877.gif" />
+    <Content Include="Images\products\878.gif" />
+    <Content Include="Images\products\879.gif" />
+    <Content Include="Images\products\880.gif" />
+    <Content Include="Images\products\881.gif" />
+    <Content Include="Images\products\882.gif" />
+    <Content Include="Images\products\883.gif" />
+    <Content Include="Images\products\884.gif" />
+    <Content Include="Images\products\885.gif" />
+    <Content Include="Images\products\886.gif" />
+    <Content Include="Images\products\887.gif" />
+    <Content Include="Images\products\888.gif" />
+    <Content Include="Images\products\889.gif" />
+    <Content Include="Images\products\890.gif" />
+    <Content Include="Images\products\891.gif" />
+    <Content Include="Images\products\892.gif" />
+    <Content Include="Images\products\893.gif" />
+    <Content Include="Images\products\894.gif" />
+    <Content Include="Images\products\895.gif" />
+    <Content Include="Images\products\896.gif" />
+    <Content Include="Images\products\897.gif" />
+    <Content Include="Images\products\898.gif" />
+    <Content Include="Images\products\899.gif" />
+    <Content Include="Images\products\900.gif" />
+    <Content Include="Images\products\901.gif" />
+    <Content Include="Images\products\902.gif" />
+    <Content Include="Images\products\903.gif" />
+    <Content Include="Images\products\904.gif" />
+    <Content Include="Images\products\905.gif" />
+    <Content Include="Images\products\906.gif" />
+    <Content Include="Images\products\907.gif" />
+    <Content Include="Images\products\908.gif" />
+    <Content Include="Images\products\909.gif" />
+    <Content Include="Images\products\910.gif" />
+    <Content Include="Images\products\911.gif" />
+    <Content Include="Images\products\912.gif" />
+    <Content Include="Images\products\913.gif" />
+    <Content Include="Images\products\914.gif" />
+    <Content Include="Images\products\915.gif" />
+    <Content Include="Images\products\916.gif" />
+    <Content Include="Images\products\917.gif" />
+    <Content Include="Images\products\918.gif" />
+    <Content Include="Images\products\919.gif" />
+    <Content Include="Images\products\920.gif" />
+    <Content Include="Images\products\921.gif" />
+    <Content Include="Images\products\922.gif" />
+    <Content Include="Images\products\923.gif" />
+    <Content Include="Images\products\924.gif" />
+    <Content Include="Images\products\925.gif" />
+    <Content Include="Images\products\926.gif" />
+    <Content Include="Images\products\927.gif" />
+    <Content Include="Images\products\928.gif" />
+    <Content Include="Images\products\929.gif" />
+    <Content Include="Images\products\930.gif" />
+    <Content Include="Images\products\931.gif" />
+    <Content Include="Images\products\932.gif" />
+    <Content Include="Images\products\933.gif" />
+    <Content Include="Images\products\934.gif" />
+    <Content Include="Images\products\935.gif" />
+    <Content Include="Images\products\936.gif" />
+    <Content Include="Images\products\937.gif" />
+    <Content Include="Images\products\938.gif" />
+    <Content Include="Images\products\939.gif" />
+    <Content Include="Images\products\940.gif" />
+    <Content Include="Images\products\941.gif" />
+    <Content Include="Images\products\942.gif" />
+    <Content Include="Images\products\943.gif" />
+    <Content Include="Images\products\944.gif" />
+    <Content Include="Images\products\945.gif" />
+    <Content Include="Images\products\946.gif" />
+    <Content Include="Images\products\947.gif" />
+    <Content Include="Images\products\948.gif" />
+    <Content Include="Images\products\949.gif" />
+    <Content Include="Images\products\950.gif" />
+    <Content Include="Images\products\951.gif" />
+    <Content Include="Images\products\952.gif" />
+    <Content Include="Images\products\953.gif" />
+    <Content Include="Images\products\954.gif" />
+    <Content Include="Images\products\955.gif" />
+    <Content Include="Images\products\956.gif" />
+    <Content Include="Images\products\957.gif" />
+    <Content Include="Images\products\958.gif" />
+    <Content Include="Images\products\959.gif" />
+    <Content Include="Images\products\960.gif" />
+    <Content Include="Images\products\961.gif" />
+    <Content Include="Images\products\962.gif" />
+    <Content Include="Images\products\963.gif" />
+    <Content Include="Images\products\964.gif" />
+    <Content Include="Images\products\965.gif" />
+    <Content Include="Images\products\966.gif" />
+    <Content Include="Images\products\967.gif" />
+    <Content Include="Images\products\968.gif" />
+    <Content Include="Images\products\969.gif" />
+    <Content Include="Images\products\970.gif" />
+    <Content Include="Images\products\971.gif" />
+    <Content Include="Images\products\972.gif" />
+    <Content Include="Images\products\973.gif" />
+    <Content Include="Images\products\974.gif" />
+    <Content Include="Images\products\975.gif" />
+    <Content Include="Images\products\976.gif" />
+    <Content Include="Images\products\977.gif" />
+    <Content Include="Images\products\978.gif" />
+    <Content Include="Images\products\979.gif" />
+    <Content Include="Images\products\980.gif" />
+    <Content Include="Images\products\981.gif" />
+    <Content Include="Images\products\982.gif" />
+    <Content Include="Images\products\983.gif" />
+    <Content Include="Images\products\984.gif" />
+    <Content Include="Images\products\985.gif" />
+    <Content Include="Images\products\986.gif" />
+    <Content Include="Images\products\987.gif" />
+    <Content Include="Images\products\988.gif" />
+    <Content Include="Images\products\989.gif" />
+    <Content Include="Images\products\990.gif" />
+    <Content Include="Images\products\991.gif" />
+    <Content Include="Images\products\992.gif" />
+    <Content Include="Images\products\993.gif" />
+    <Content Include="Images\products\994.gif" />
+    <Content Include="Images\products\995.gif" />
+    <Content Include="Images\products\996.gif" />
+    <Content Include="Images\products\997.gif" />
+    <Content Include="Images\products\998.gif" />
+    <Content Include="Images\products\999.gif" />
+    <Content Include="Images\subcategories\1.gif" />
+    <Content Include="Images\subcategories\10.gif" />
+    <Content Include="Images\subcategories\11.gif" />
+    <Content Include="Images\subcategories\12.gif" />
+    <Content Include="Images\subcategories\13.gif" />
+    <Content Include="Images\subcategories\14.gif" />
+    <Content Include="Images\subcategories\15.gif" />
+    <Content Include="Images\subcategories\16.gif" />
+    <Content Include="Images\subcategories\17.gif" />
+    <Content Include="Images\subcategories\18.gif" />
+    <Content Include="Images\subcategories\19.gif" />
+    <Content Include="Images\subcategories\2.gif" />
+    <Content Include="Images\subcategories\20.gif" />
+    <Content Include="Images\subcategories\21.gif" />
+    <Content Include="Images\subcategories\22.gif" />
+    <Content Include="Images\subcategories\23.gif" />
+    <Content Include="Images\subcategories\24.gif" />
+    <Content Include="Images\subcategories\25.gif" />
+    <Content Include="Images\subcategories\26.gif" />
+    <Content Include="Images\subcategories\27.gif" />
+    <Content Include="Images\subcategories\28.gif" />
+    <Content Include="Images\subcategories\29.gif" />
+    <Content Include="Images\subcategories\3.gif" />
+    <Content Include="Images\subcategories\30.gif" />
+    <Content Include="Images\subcategories\31.gif" />
+    <Content Include="Images\subcategories\32.gif" />
+    <Content Include="Images\subcategories\33.gif" />
+    <Content Include="Images\subcategories\34.gif" />
+    <Content Include="Images\subcategories\35.gif" />
+    <Content Include="Images\subcategories\36.gif" />
+    <Content Include="Images\subcategories\37.gif" />
+    <Content Include="Images\subcategories\4.gif" />
+    <Content Include="Images\subcategories\5.gif" />
+    <Content Include="Images\subcategories\6.gif" />
+    <Content Include="Images\subcategories\7.gif" />
+    <Content Include="Images\subcategories\8.gif" />
+    <Content Include="Images\subcategories\9.gif" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <Content Include="Scripts\jquery-ui-1.9.2.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-2.2.0.debug.js" />
+    <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Images\accent.png" />
+    <Content Include="Images\bullet.png" />
+    <Content Include="Images\heroAccent.png" />
+    <Content Include="Images\orderedList0.png" />
+    <Content Include="Images\orderedList1.png" />
+    <Content Include="Images\orderedList2.png" />
+    <Content Include="Images\orderedList3.png" />
+    <Content Include="Images\orderedList4.png" />
+    <Content Include="Images\orderedList5.png" />
+    <Content Include="Images\orderedList6.png" />
+    <Content Include="Images\orderedList7.png" />
+    <Content Include="Images\orderedList8.png" />
+    <Content Include="Images\orderedList9.png" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess.Domain.Services.Interface\DataAccess.Domain.Services.Interface.csproj">
+      <Project>{5578f85b-cc91-4e90-a0aa-b279770d0bf5}</Project>
+      <Name>DataAccess.Domain.Services.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess.DomainEntities\DataAccess.Domain.csproj">
+      <Project>{6be79c0e-2056-4025-8d8d-550191c23d8e}</Project>
+      <Name>DataAccess.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess.Repository\DataAccess.Repository.csproj">
+      <Project>{e139ad36-72a7-4f3f-a6fd-680d159c05e8}</Project>
+      <Name>DataAccess.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>12345</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:43743/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>Powershell.exe -file "$(SolutionDir)scripts\CopyAssembliesToWebApi.ps1" $(ConfigurationName)</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

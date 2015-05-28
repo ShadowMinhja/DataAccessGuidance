@@ -1,0 +1,20 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+<h3>
+    The item has been added to the shopping cart...
+</h3>
+
+<p>
+    Back to categories to @Html.ActionLink("continue shopping", "Index", "Category", routeValues: null, htmlAttributes: new { id = "shoppingLink" })
+</p>
+<p>
+    Or proceed to @Html.ActionLink("checkout your items", "Checkout", "Cart", routeValues: null, htmlAttributes: new { id = "checkoutLink" })
+</p>

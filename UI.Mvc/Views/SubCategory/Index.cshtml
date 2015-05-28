@@ -1,0 +1,59 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@Html.Hidden("categoryId", @ViewContext.RouteData.Values["categoryId"])
+
+<h2 id="categoryName"></h2>
+
+<div id="subcategoriesSection">
+    <p class="breadcrumbs">
+        <a href="/categories">All Categories</a>
+        > <span id="categoryBreadcrumb"></span>
+    </p>
+
+    <div id="subcategories" class="loading"></div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            var categoryId = $('#categoryId').val();
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                timeout: 15000,
+                url: baseApiUrl + '/categories/' + categoryId + '/subcategories',
+                success: function (subcategories) {
+                    if (subcategories.length > 0) {
+                        $("#categoryBreadcrumb").html(subcategories[0].categoryName);
+                        $("#categoryName").html(subcategories[0].categoryName);
+                        var subcategoriesHtml = "";
+                        $.each(subcategories, function (index, subcategory) {
+                            var imgUrl = baseImageUrl + '/subcategories/' + subcategory.id + imgExt;
+                            subcategoriesHtml += "<div class='image-box'><a href='/subcategories/" + subcategory.id + "/products'>";
+                            subcategoriesHtml += "<img src='" + imgUrl + "' alt='" + subcategory.name + "'></a>";
+                            subcategoriesHtml += "<p>" + subcategory.name + "</p></div>";
+                        });
+                        var $subcategories = $('#subcategories');
+                        $subcategories.html(subcategoriesHtml);
+                        $subcategories.toggleClass('loading');
+                    }
+                    else {
+                        $('#subcategoriesSection').html('<h3>There are no subcategories for selected category, please check url and try again..</h3>');
+                    }
+                },
+                error: function (x, y, z) {
+                    $('#subcategoriesSection').html('<h3>Error retrieving subcategories information, check url and try again..</h3>');
+                }
+            });
+        });
+    </script>
+}

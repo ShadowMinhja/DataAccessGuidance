@@ -1,0 +1,49 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+<h2>All Categories</h2>
+
+<div id="categoriesSection">
+    <div id="categories" class="loading"></div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                timeout: 15000,
+                url: baseApiUrl + '/categories',
+                success: function (categories) {
+                    if (categories.length > 0) {
+                        var categoriesHtml = "";
+                        $.each(categories, function (index, category) {
+                            var imgUrl = baseImageUrl + '/categories/' + category.id + imgExt;
+                            categoriesHtml += "<div class='image-box'><a href='/categories/" + category.id + "/subcategories'>";
+                            categoriesHtml += "<img src='" + imgUrl + "' alt='" + category.name + "'></a>";
+                            categoriesHtml += "<p>" + category.name + "</p></div>";
+                        });
+                        var $categories = $('#categories');
+                        $categories.html(categoriesHtml);
+                        $categories.toggleClass('loading');
+                    }
+                    else {
+                        $('#categoriesSection').html('<h3>There are no categories to browse, please ask the system administrator..</h3>');
+                    }
+                },
+                error: function (x, y, z) {
+                    $('#categoriesSection').html('<h3>Error retrieving categories information, please check url and try again..</h3>');
+                }
+            });
+        });
+    </script>
+}

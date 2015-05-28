@@ -1,0 +1,86 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@model UI.Mvc.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+@Html.Hidden("returnUrl", (string)@ViewBag.ReturnUrl)
+<hgroup class="title">
+    <h1>Log In</h1>
+</hgroup>
+
+<section id="loginForm">
+    @using (Ajax.BeginForm(new AjaxOptions()
+    {
+        Url = Url.Action("Authenticate", "Account"),
+        OnSuccess = "logonSuccess",
+        OnFailure = "logonFailed"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Log in Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(m => m.UserName)
+                    @Html.TextBoxFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </li>
+            </ol>
+            <input id="loginButton" type="submit" value="Log in" />
+        </fieldset>
+        <p>
+            @Html.ActionLink("Register", "Register", routeValues: null, htmlAttributes: new { id = "registerLink" }) if you don't have an account.
+        </p>
+    }
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        var returnUrl = "";
+        var $loginButton = $('#loginButton');
+
+        $('form').submit(function (e) {
+            if ($('form').valid()) {
+                $loginButton.attr('disabled', 'disabled');
+                $loginButton.toggleClass('loading-tiny');
+            }
+        });
+
+        $(function () {
+            returnUrl = $('#returnUrl').val();
+            if (returnUrl == null || returnUrl == "") {
+                returnUrl = '/';
+            }
+        });
+
+        function logonFailed(ajaxContext) {
+            //alert('(' + ajaxContext.status + ') - ' + ajaxContext.statusText);
+            alert('Login faild. Please check you username and password');
+            $loginButton.toggleClass('loading-tiny');
+            $loginButton.removeAttr('disabled');
+        }
+
+        function logonSuccess(data) {
+            window.location = returnUrl;
+        }
+    </script>
+}

@@ -1,0 +1,153 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@model UI.Mvc.Models.RegisterModel
+
+<hgroup class="title">
+    <h1>Register</h1>
+</hgroup>
+
+@using (Ajax.BeginForm(new AjaxOptions()
+    {
+        Url = Url.Action("Register", "Account"),
+        OnSuccess = "logonSuccess",
+        OnFailure = "logonFailed"
+    }))
+{
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <h3>Personal Information</h3>
+            <li>
+                @Html.LabelFor(m => m.EmailAddress)
+                @Html.TextBoxFor(m => m.EmailAddress)
+                @Html.ValidationMessageFor(m => m.EmailAddress)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.FirstName)
+                @Html.TextBoxFor(m => m.FirstName)
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.LastName)
+                @Html.TextBoxFor(m => m.LastName)
+                @Html.ValidationMessageFor(m => m.LastName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword)
+                @Html.ValidationMessageFor(m => m.ConfirmPassword)
+            </li>
+            <h3>Address Information</h3>
+            <li>
+                @Html.LabelFor(m => m.Address)
+                @Html.TextBoxFor(m => m.Address)
+                @Html.ValidationMessageFor(m => m.Address)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.City)
+                @Html.TextBoxFor(m => m.City)
+                @Html.ValidationMessageFor(m => m.City)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.StateCode)
+                <select data-val="true" data-val-required="The State field is required." id="ddlStateCode" name="StateCode"></select>
+                <span class="field-validation-valid" data-valmsg-for="StateCode" data-valmsg-replace="true"></span>
+            </li>
+            <li>
+                @Html.LabelFor(m => m.PostalCode)
+                @Html.TextBoxFor(m => m.PostalCode)
+                @Html.ValidationMessageFor(m => m.PostalCode)
+            </li>
+            <h3>Payment Information</h3>
+            <li>
+                @Html.LabelFor(m => m.CardType)
+                @Html.TextBoxFor(m => m.CardType)
+                @Html.ValidationMessageFor(m => m.CardType)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.CardNumber)
+                @Html.TextBoxFor(m => m.CardNumber)
+                @Html.ValidationMessageFor(m => m.CardNumber)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.ExpMonth)
+                @Html.TextBoxFor(m => m.ExpMonth)
+                @Html.ValidationMessageFor(m => m.ExpMonth)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.ExpYear)
+                @Html.TextBoxFor(m => m.ExpYear)
+                @Html.ValidationMessageFor(m => m.ExpYear)
+            </li>
+        </ol>
+        <input id="registerButton" type="submit" value="Register" />
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        var $registerButton = $('#registerButton');
+
+        $('form').submit(function (e) {
+            if ($('form').valid()) {
+                $registerButton.attr('disabled', 'disabled');
+                $registerButton.toggleClass('loading-tiny');
+            }
+        });
+
+        $(function () {
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                url: baseApiUrl + '/states',
+                success: function (states) {
+                    $('#ddlStateCode').each(function () {
+                        var dropdownlist = this;
+                        $.each(states, function (index, state) {
+                            var stateText = state.stateProvinceCode + "- " + state.countryRegionCode;
+                            var option = new Option(stateText, state.stateProvinceId);
+                            if ($.browser.msie) {
+                                dropdownlist.add(option);
+                            }
+                            else {
+                                dropdownlist.add(option, null);
+                            }
+                        });
+                    });
+                }
+            });
+        });
+
+        function logonFailed(ajaxContext) {
+            alert('(' + ajaxContext.status + ') - ' + ajaxContext.statusText);
+            $registerButton.toggleClass('loading-tiny');
+            $registerButton.removeAttr('disabled');
+        }
+
+        function logonSuccess(data, status, xhr) {
+            if (data.registerSuccess == true) {
+                window.location = '/categories';
+            } else {
+                alert(data.error);
+                $registerButton.toggleClass('loading-tiny');
+                $registerButton.removeAttr('disabled');
+            }
+        }
+    </script>
+}

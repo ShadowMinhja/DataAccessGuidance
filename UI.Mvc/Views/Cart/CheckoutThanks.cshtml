@@ -1,0 +1,33 @@
+﻿@*
+===============================================================================
+ Microsoft patterns & practices
+ Data Access Guide
+===============================================================================
+ Copyright © Microsoft Corporation.  All rights reserved.
+ This code released under the terms of the 
+ Microsoft patterns & practices license (http://dataguidance.codeplex.com/license)
+===============================================================================
+*@
+@{
+    ViewBag.Title = "Thank You";
+}
+
+<h2>Thanks! Your order has been submitted.</h2>
+
+@Html.Partial("_OrderDetail")
+
+<p>
+    @Html.ActionLink("See your orders history", "Index", "Order", routeValues: null, htmlAttributes: new { id = "ordersLink" })
+</p>
+<p>
+    @Html.ActionLink("Continue shopping", "Index", "Category", routeValues: null, htmlAttributes: new { id = "shoppingLink" })
+</p>
+
+@section scripts
+{
+   <script type="text/javascript">
+       $(function () {
+           retrieveOrderDetails(baseApiUrl + '/orders/@this.ViewContext.RouteData.Values["orderId"]', false);
+       });
+    </script>
+}
